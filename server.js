@@ -1,8 +1,7 @@
-'use strict';
-
+//  'use strict';
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
+
 const mongoose = require('mongoose');
 
 const db = mongoose.connection;
@@ -12,14 +11,78 @@ db.once('open', function () {
 })
 mongoose.connect(process.env.MONGODB_URL);
 
+
+const Books = require('./models/books');
 const app = express();
+
+const cors = require('cors');
+
 app.use(cors());
-const PORT = process.env.PORT || 3001;
 
-app.get('/test', (request, response) => {
+// handel requests from json
+// app.use(express.json());
 
-  response.send('test request received')
 
+// route handlers
+
+app.get('/books', async (req, res) => {
+  const location = req.query.location;
+  const findQuery = {};
+  if (location) {
+    findQuery.location = location;
+  }
+  const books = await Books.find(findQuery);
+  res.send(books);
 })
+app.post('/books', postBooks);
+// app.delete('books/:id', deletedBooks)
+
+// Start Server Here
+
+
+const PORT = process.env.PORT;
+if (!parseInt(PORT)) throw 'Invalid PORT';
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
+
+
+
+async function postBooks(req, res) {
+  console.log('headers', req.headers);
+  console.log('body', req.body);
+git
+  try {
+    const newBooks = await Books.create(req.body);
+    res.send(newBooks);
+  } catch (err) {
+    handleError(err, res);
+  }
+}
+async function deletebooks(req, res) {
+
+  // value from route /cats/:id
+
+  let id = req.params.id;
+
+  try {
+    await Books.findByIdAndDelete(id);
+    res.status(204).send();
+  }
+  catch (err) {
+    handleError(err, res);
+  }
+}
+
+// move this to a module
+function handleError(err, res) {
+  console.error(err);
+  res.status(500).send('oops!');
+}
+
+
+
+
+
+
+
+ 

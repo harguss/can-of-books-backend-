@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
-mongoose.connect(process.env.MONGOD_URL);
+mongoose.connect(process.env.MONGODB_URL);
 
 const Books = require('./models/books');
 
 async function seed() {
 
-  console.log('Deleting existing books'),
+  console.log('Deleting existing books');
   await Books.deleteMany({});
+  
 
   const myBooks = new Books({
     title: 'Harry Potter', 

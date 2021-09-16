@@ -38,7 +38,7 @@ app.get('/books', async (req, res) => {
   res.send(books);
 })
  app.post('/books', postBooks);
-// app.delete('books/:id', deletedBooks)
+ app.delete('/books/:id', deleteBooks)
 //  app.post('/books', (req ,res) => {
 //  res.send('Lumos');
 //  })
@@ -63,7 +63,7 @@ async function postBooks(req, res) {
     handleError(err, res);
   }
 }
-async function deletebooks(req, res) {
+async function deleteBooks(req, res) {
 
   // value from route /books/:id
 

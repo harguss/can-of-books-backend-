@@ -1,6 +1,8 @@
 //  'use strict';
+
 require('dotenv').config();
 const express = require('express');
+
 
 const mongoose = require('mongoose');
 
@@ -19,13 +21,14 @@ const cors = require('cors');
 
 app.use(cors());
 
-// handel requests from json
-// app.use(express.json());
+//  handel requests from json
+ app.use(express.json());
 
 
 // route handlers
 
 app.get('/books', async (req, res) => {
+  console.log('this is the req on the ', req);
   const location = req.query.location;
   const findQuery = {};
   if (location) {
@@ -34,9 +37,11 @@ app.get('/books', async (req, res) => {
   const books = await Books.find(findQuery);
   res.send(books);
 })
-app.post('/books', postBooks);
-// app.delete('books/:id', deletedBooks)
-
+ app.post('/books', postBooks);
+  // app.delete('books/:id', deletedBooks)
+//  app.post('/books', (req ,res) => {
+//  res.send('Lumos');
+//  })
 // Start Server Here
 
 
@@ -50,7 +55,7 @@ app.listen(PORT, () => console.log(`listening on ${PORT}`));
 async function postBooks(req, res) {
   console.log('headers', req.headers);
   console.log('body', req.body);
-git
+
   try {
     const newBooks = await Books.create(req.body);
     res.send(newBooks);
@@ -60,7 +65,7 @@ git
 }
 async function deletebooks(req, res) {
 
-  // value from route /cats/:id
+  // value from route /books/:id
 
   let id = req.params.id;
 
